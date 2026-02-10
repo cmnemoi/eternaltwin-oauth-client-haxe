@@ -1,0 +1,29 @@
+name: Continuous Delivery
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    name: Publish to Haxelib
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Install Haxe
+        uses: krdlab/setup-haxe@v2.0.2
+        with:
+          haxe-version: 4.3.7
+      
+      - name: Install dependencies
+        run: haxelib install haxelib.json
+      
+      - name: Publish to Haxelib
+        env:
+          HAXELIB_PASSWORD: ${{ secrets.HAXELIB_PASSWORD }}
+        run: |
+          echo "$HAXELIB_PASSWORD" | haxelib submit

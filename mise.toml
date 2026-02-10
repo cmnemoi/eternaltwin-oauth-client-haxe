@@ -1,0 +1,8 @@
+[tools]
+haxe = "4.3.7"
+neko = "2-4-1"
+act = "latest"
+
+[env]
+HAXE_STD_PATH = "/Users/cmnemoi/.local/share/mise/installs/haxe/4.3.7/std"
+NEKOPATH = "/Users/cmnemoi/.local/share/mise/installs/neko/2-4-1"

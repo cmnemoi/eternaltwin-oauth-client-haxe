@@ -1,0 +1,29 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    name: Test (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [js, neko]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Install Haxe
+        uses: krdlab/setup-haxe@v2.0.2
+        with:
+          haxe-version: 4.3.7
+      
+      - name: Install dependencies
+        run: haxelib install haxelib.json
+      
+      - name: Run tests (${{ matrix.target }})
+        run: haxe test-${{ matrix.target }}.hxml
