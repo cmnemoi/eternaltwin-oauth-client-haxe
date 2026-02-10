@@ -1,5 +1,7 @@
 package eternaltwin.oauth;
 
+import tink.core.Future;
+
 /**
     Interface for making HTTP requests.
 
@@ -22,12 +24,12 @@ interface HttpClient {
 
         Returns
         -------
-        HttpResponse
-            The server response.
+        Future<HttpResponse>
+            A future that resolves to the server response.
     **/
     function post(
         url:String,
         headers:Map<String, String>,
         body:String
-    ):HttpResponse;
+    ):Future<HttpResponse>;
 }

@@ -26,46 +26,88 @@ class RfcOauthClientTest extends utest.Test {
         Assert.stringContains("state%20with%20spaces%26special%3Dchars", uri);
     }
 
-    function testShouldExchangeCodeForAccessToken():Void {
-        var accessToken = oauthClient.getAccessToken("one_time_auth_code");
-
-        thenAccessTokenIsParsedCorrectly(accessToken);
+    function testShouldExchangeCodeForAccessToken(async:utest.Async):Void {
+        oauthClient.getAccessToken("one_time_auth_code")
+            .handle(function(outcome) {
+                switch (outcome) {
+                    case Success(accessToken):
+                        thenAccessTokenIsParsedCorrectly(accessToken);
+                    case Failure(error):
+                        Assert.fail("Expected success but got: " + error.message);
+                }
+                async.done();
+            });
     }
 
-    function testShouldSendBasicAuthHeader():Void {
-        oauthClient.getAccessToken("one_time_auth_code");
-
-        thenBasicAuthHeaderWasSent();
+    function testShouldSendBasicAuthHeader(async:utest.Async):Void {
+        oauthClient.getAccessToken("one_time_auth_code")
+            .handle(function(outcome) {
+                switch (outcome) {
+                    case Success(_):
+                        thenBasicAuthHeaderWasSent();
+                    case Failure(error):
+                        Assert.fail("Expected success but got: " + error.message);
+                }
+                async.done();
+            });
     }
 
-    function testShouldSendCorrectJsonBody():Void {
-        oauthClient.getAccessToken("one_time_auth_code");
-
-        thenRequestBodyContainsExpectedFields();
+    function testShouldSendCorrectJsonBody(async:utest.Async):Void {
+        oauthClient.getAccessToken("one_time_auth_code")
+            .handle(function(outcome) {
+                switch (outcome) {
+                    case Success(_):
+                        thenRequestBodyContainsExpectedFields();
+                    case Failure(error):
+                        Assert.fail("Expected success but got: " + error.message);
+                }
+                async.done();
+            });
     }
 
-    function testShouldPostToTokenEndpoint():Void {
-        oauthClient.getAccessToken("one_time_auth_code");
-
-        Assert.equals("http://localhost:50320/oauth/token", fakeHttpClient.lastRequestUrl);
+    function testShouldPostToTokenEndpoint(async:utest.Async):Void {
+        oauthClient.getAccessToken("one_time_auth_code")
+            .handle(function(outcome) {
+                switch (outcome) {
+                    case Success(_):
+                        Assert.equals("http://localhost:50320/oauth/token", fakeHttpClient.lastRequestUrl);
+                    case Failure(error):
+                        Assert.fail("Expected success but got: " + error.message);
+                }
+                async.done();
+            });
     }
 
-    function testShouldThrowOnNonSuccessHttpStatus():Void {
+    function testShouldFailOnNonSuccessHttpStatus(async:utest.Async):Void {
         var errorClient = givenFakeHttpClientWithErrorResponse();
         var client = givenOauthClient(errorClient);
 
-        Assert.raises(function() {
-            client.getAccessToken("one_time_auth_code");
-        }, OauthError);
+        client.getAccessToken("one_time_auth_code")
+            .handle(function(outcome) {
+                switch (outcome) {
+                    case Failure(error):
+                        Assert.stringContains("Token request failed with status 401", error.message);
+                    case Success(_):
+                        Assert.fail("Expected failure but got success");
+                }
+                async.done();
+            });
     }
 
-    function testShouldThrowOnMalformedJsonResponse():Void {
+    function testShouldFailOnMalformedJsonResponse(async:utest.Async):Void {
         var malformedClient = givenFakeHttpClientWithMalformedResponse();
         var client = givenOauthClient(malformedClient);
 
-        Assert.raises(function() {
-            client.getAccessToken("one_time_auth_code");
-        }, OauthError);
+        client.getAccessToken("one_time_auth_code")
+            .handle(function(outcome) {
+                switch (outcome) {
+                    case Failure(error):
+                        Assert.stringContains("Failed to parse token response", error.message);
+                    case Success(_):
+                        Assert.fail("Expected failure but got success");
+                }
+                async.done();
+            });
     }
 
     private function givenFakeHttpClientWithTokenResponse():FakeHttpClient {

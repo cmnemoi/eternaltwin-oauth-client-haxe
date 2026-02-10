@@ -1,12 +1,14 @@
 package eternaltwin.oauth;
 
 import sys.Http;
+import tink.core.Future;
 
 /**
     HttpClient adapter for sys targets (Neko, CPP, Python, etc.).
 
-    Uses sys.Http to make synchronous HTTP requests on platforms
-    that support the Haxe sys API.
+    Uses sys.Http to make HTTP requests on platforms that support
+    the Haxe sys API. The call is blocking but wrapped in a Future
+    for interface consistency.
 **/
 class SysHttpClient implements HttpClient {
     /** Creates a new SysHttpClient. **/
@@ -26,14 +28,15 @@ class SysHttpClient implements HttpClient {
 
         Returns
         -------
-        HttpResponse
-            The server response.
+        Future<HttpResponse>
+            A future that resolves immediately to the server response.
+            The underlying HTTP call is blocking (synchronous).
     **/
     public function post(
         url:String,
         headers:Map<String, String>,
         body:String
-    ):HttpResponse {
+    ):Future<HttpResponse> {
         var http = createRequest(url, headers, body);
         return executeRequest(http);
     }
@@ -59,7 +62,7 @@ class SysHttpClient implements HttpClient {
         http.setHeader("Content-Type", "application/json");
     }
 
-    private function executeRequest(http:Http):HttpResponse {
+    private function executeRequest(http:Http):Future<HttpResponse> {
         var responseBody:String = null;
         var statusCode:Int = 0;
 
@@ -74,6 +77,6 @@ class SysHttpClient implements HttpClient {
         };
 
         http.request(true);
-        return new HttpResponse(statusCode, responseBody);
+        return Future.sync(new HttpResponse(statusCode, responseBody));
     }
 }

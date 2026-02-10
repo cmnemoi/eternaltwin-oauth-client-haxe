@@ -8,6 +8,7 @@
   "url": "https://gitlab.com/eternaltwin/etwin",
   "classPath": "src",
   "dependencies": {
-    "utest": "1.13.2"
+    "utest": "1.13.2",
+    "tink_core": "2.1.1"
   }
 }

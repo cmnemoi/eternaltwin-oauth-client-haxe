@@ -1,2 +1,3 @@
 -cp src
+-lib tink_core
 -js bin/oauth-client.js

@@ -1,5 +1,7 @@
 package eternaltwin.oauth;
 
+import tink.core.Future;
+
 /**
     Test double for HttpClient that records requests and returns canned responses.
 **/
@@ -28,7 +30,7 @@ class FakeHttpClient implements HttpClient {
     }
 
     /**
-        Records the request details and returns the canned response.
+        Records the request details and returns the canned response wrapped in a Future.
 
         Parameters
         ----------
@@ -41,17 +43,17 @@ class FakeHttpClient implements HttpClient {
 
         Returns
         -------
-        HttpResponse
-            The canned response.
+        Future<HttpResponse>
+            A future that resolves immediately to the canned response.
     **/
     public function post(
         url:String,
         headers:Map<String, String>,
         body:String
-    ):HttpResponse {
+    ):Future<HttpResponse> {
         lastRequestUrl = url;
         lastRequestHeaders = headers;
         lastRequestBody = body;
-        return cannedResponse;
+        return Future.sync(cannedResponse);
     }
 }

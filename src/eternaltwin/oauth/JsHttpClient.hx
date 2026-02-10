@@ -1,11 +1,12 @@
 package eternaltwin.oauth;
 
 import haxe.http.HttpJs;
+import tink.core.Future;
 
 /**
     HttpClient adapter for the JavaScript target.
 
-    Uses haxe.http.HttpJs (XMLHttpRequest) to make synchronous
+    Uses haxe.http.HttpJs (XMLHttpRequest) to make asynchronous
     HTTP requests in browser or Node.js environments.
 **/
 class JsHttpClient implements HttpClient {
@@ -26,14 +27,14 @@ class JsHttpClient implements HttpClient {
 
         Returns
         -------
-        HttpResponse
-            The server response.
+        Future<HttpResponse>
+            A future that resolves to the server response.
     **/
     public function post(
         url:String,
         headers:Map<String, String>,
         body:String
-    ):HttpResponse {
+    ):Future<HttpResponse> {
         var http = createRequest(url, headers, body);
         return executeRequest(http);
     }
@@ -44,7 +45,7 @@ class JsHttpClient implements HttpClient {
         body:String
     ):HttpJs {
         var http = new HttpJs(url);
-        http.async = false;
+        http.async = true;
         setHeaders(http, headers);
         http.setPostData(body);
         return http;
@@ -60,21 +61,21 @@ class JsHttpClient implements HttpClient {
         http.setHeader("Content-Type", "application/json");
     }
 
-    private function executeRequest(http:HttpJs):HttpResponse {
-        var responseBody:String = null;
+    private function executeRequest(http:HttpJs):Future<HttpResponse> {
+        var trigger = Future.trigger();
         var statusCode:Int = 0;
 
-        http.onData = function(data:String):Void {
-            responseBody = data;
-        };
-        http.onError = function(error:String):Void {
-            responseBody = error;
-        };
         http.onStatus = function(status:Int):Void {
             statusCode = status;
         };
+        http.onData = function(data:String):Void {
+            trigger.trigger(new HttpResponse(statusCode, data));
+        };
+        http.onError = function(error:String):Void {
+            trigger.trigger(new HttpResponse(statusCode, error));
+        };
 
         http.request(true);
-        return new HttpResponse(statusCode, responseBody);
+        return trigger.asFuture();
     }
 }

@@ -1,5 +1,6 @@
 -cp src
 -cp tests
 -lib utest
+-lib tink_core
 -neko bin/tests.n
 -main TestAll

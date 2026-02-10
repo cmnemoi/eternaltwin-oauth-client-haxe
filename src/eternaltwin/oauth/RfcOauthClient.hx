@@ -3,6 +3,8 @@ package eternaltwin.oauth;
 import haxe.crypto.Base64;
 import haxe.io.Bytes;
 import haxe.Json;
+import tink.core.Error;
+import tink.core.Promise;
 
 /**
     RFC-compliant OAuth client for the Eternaltwin platform.
@@ -65,36 +67,33 @@ class RfcOauthClient {
 
         Returns
         -------
-        AccessToken
-            The OAuth access token.
-
-        Throws
-        ------
-        OauthError
-            If the server returns a non-success status or an unparseable response.
+        Promise<AccessToken>
+            A promise that resolves to the OAuth access token,
+            or fails with a tink.core.Error whose `data` field contains the OauthError.
     **/
-    public function getAccessToken(code:String):AccessToken {
+    public function getAccessToken(code:String):Promise<AccessToken> {
         var headers = buildTokenRequestHeaders();
         var body = buildTokenRequestBody(code);
-        var response = httpClient.post(config.tokenEndpoint, headers, body);
-        validateResponse(response);
-        return parseTokenResponse(response.body);
+        return httpClient.post(config.tokenEndpoint, headers, body)
+            .next(function(response:HttpResponse):Promise<AccessToken> {
+                return validateAndParse(response);
+            });
     }
 
-    private function validateResponse(response:HttpResponse):Void {
+    private function validateAndParse(response:HttpResponse):Promise<AccessToken> {
         var isSuccess = response.statusCode >= 200 && response.statusCode < 300;
         if (!isSuccess) {
-            throw new OauthError(
+            var oauthError = new OauthError(
                 "Token request failed with status " + response.statusCode + ": " + response.body
             );
+            return new Error(response.statusCode, oauthError.message);
         }
-    }
-
-    private function parseTokenResponse(body:String):AccessToken {
         try {
-            return AccessToken.fromJson(body);
+            var accessToken = AccessToken.fromJson(response.body);
+            return Promise.resolve(accessToken);
         } catch (error:Dynamic) {
-            throw new OauthError("Failed to parse token response: " + body);
+            var oauthError = new OauthError("Failed to parse token response: " + response.body);
+            return new Error(InternalError, oauthError.message);
         }
     }
 

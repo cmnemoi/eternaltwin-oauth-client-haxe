@@ -36,8 +36,15 @@ var authUri = oauthClient.getAuthorizationUri("base", "random-state-value");
 
 // Step 2: Exchange the authorization code for an access token
 // (After user is redirected back to your callback with a code)
-var accessToken = oauthClient.getAccessToken("authorization-code-from-callback");
-trace("Access token: " + accessToken.accessToken);
+oauthClient.getAccessToken("authorization-code-from-callback")
+    .handle(function(outcome) {
+        switch (outcome) {
+            case Success(accessToken):
+                trace("Access token: " + accessToken.accessToken);
+            case Failure(error):
+                trace("OAuth error: " + error.message);
+        }
+    });
 ```
 
 ## Components
@@ -47,7 +54,7 @@ trace("Access token: " + accessToken.accessToken);
 The main OAuth client class that implements the authorization code flow:
 
 - `getAuthorizationUri(scope, state)` - Builds the authorization URI for redirecting users
-- `getAccessToken(code)` - Exchanges an authorization code for an access token
+- `getAccessToken(code)` - Exchanges an authorization code for an access token (returns `Promise<AccessToken>`)
 
 ### OauthClientConfig
 
@@ -61,10 +68,10 @@ Configuration class for OAuth endpoints and credentials:
 
 ### HttpClient
 
-Interface for HTTP requests with platform-specific implementations:
+Interface for asynchronous HTTP requests (returns `Future<HttpResponse>`) with platform-specific implementations:
 
-- `SysHttpClient` - For sys targets (Neko, C++, Java, etc.)
-- `JsHttpClient` - For JavaScript targets
+- `SysHttpClient` - For sys targets (Neko, C++, Java, etc.) — blocking call wrapped in `Future.sync()`
+- `JsHttpClient` - For JavaScript targets — truly asynchronous via `FutureTrigger`
 - `FakeHttpClient` - For testing (available in tests)
 
 ### AccessToken
@@ -78,17 +85,21 @@ Represents an OAuth access token response:
 
 ## Error Handling
 
-The client throws `OauthError` when:
+`getAccessToken()` returns a `Promise<AccessToken>`. Errors are represented as `Failure(tink.core.Error)` in the outcome:
 
 - The token endpoint returns a non-success HTTP status
 - The token response cannot be parsed
 
 ```haxe
-try {
-    var accessToken = oauthClient.getAccessToken(code);
-} catch (error:OauthError) {
-    trace("OAuth error: " + error.message);
-}
+oauthClient.getAccessToken(code)
+    .handle(function(outcome) {
+        switch (outcome) {
+            case Success(accessToken):
+                trace("Token: " + accessToken.accessToken);
+            case Failure(error):
+                trace("OAuth error: " + error.message);
+        }
+    });
 ```
 
 ## License
