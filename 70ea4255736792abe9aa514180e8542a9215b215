@@ -1,0 +1,60 @@
+.opencode/plans/async-migration.md
+  c21d6959a0bc7135 1-344
+haxelib.json
+  609617b7c670a90d 11
+test.hxml
+  609617b7c670a90d 4
+src/eternaltwin/oauth/RfcOauthClient.hx
+  609617b7c670a90d 6-7,70-72,74,77-80,83,86,89,92-93,95-96
+tests/eternaltwin/oauth/RfcOauthClientTest.hx
+  609617b7c670a90d 29,31-39,42-52,55,57-65,68-78,81,85-91,93-94,97,101-107,109-110
+src/eternaltwin/oauth/HttpClient.hx
+  609617b7c670a90d 3-4,27-28,34
+test-js.hxml
+  609617b7c670a90d 4
+src/eternaltwin/oauth/JsHttpClient.hx
+  609617b7c670a90d 4,9,30-31,37,48,64-65,68-70,72,75,79
+src/eternaltwin/oauth/SysHttpClient.hx
+  609617b7c670a90d 4,9-11,31-33,39,65,80
+test-neko.hxml
+  609617b7c670a90d 4
+README.md
+  609617b7c670a90d 40-47,57,71,73-74,88,94-99,101-102
+build.hxml
+  609617b7c670a90d 2
+tests/eternaltwin/oauth/FakeHttpClient.hx
+  609617b7c670a90d 3-4,33,46-47,53,57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.1",
+  "base_commit_sha": "70ea4255736792abe9aa514180e8542a9215b215",
+  "prompts": {
+    "609617b7c670a90d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3b728ba0cffe9dQ3vtp2f1bedv",
+        "model": "github-copilot/claude-opus-4.6"
+      },
+      "human_author": "Charles-Meldhine Madi Mnemoi <icdk5b4zf@relay.firefox.com>",
+      "messages": [],
+      "total_additions": 150,
+      "total_deletions": 85,
+      "accepted_lines": 141,
+      "overriden_lines": 1
+    },
+    "c21d6959a0bc7135": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3b73151fcffeRxSUtFuseT28nZ",
+        "model": "github-copilot/claude-opus-4.6"
+      },
+      "human_author": "Charles-Meldhine Madi Mnemoi <icdk5b4zf@relay.firefox.com>",
+      "messages": [],
+      "total_additions": 371,
+      "total_deletions": 27,
+      "accepted_lines": 344,
+      "overriden_lines": 0
+    }
+  }
+}
