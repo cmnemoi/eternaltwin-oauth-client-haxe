@@ -1,0 +1,27 @@
+.github/workflows/publish-haxelib.yml
+  63a458d5c5b8794b 7
+.github/workflows/test.yml
+  63a458d5c5b8794b 7
+.github/workflows/release-please.yml
+  63a458d5c5b8794b 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.1",
+  "base_commit_sha": "4d854694e08506851471aa83f3809e9866d178c9",
+  "prompts": {
+    "63a458d5c5b8794b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3b77e4f8bffeIuQL20ifqpLDCH",
+        "model": "opencode/kimi-k2.5-free"
+      },
+      "human_author": "Charles-Meldhine Madi Mnemoi <icdk5b4zf@relay.firefox.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
