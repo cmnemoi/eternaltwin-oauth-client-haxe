@@ -2,9 +2,11 @@
   "name": "eternaltwin-oauth-client",
   "releasenote": "",
   "description": "RFC-compliant Haxe client for Eternaltwin OAuth 2.0 server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "GPL",
-  "contributors": ["cmnemoi"],
+  "contributors": [
+    "cmnemoi"
+  ],
   "url": "https://gitlab.com/eternaltwin/etwin",
   "classPath": "src",
   "dependencies": {
