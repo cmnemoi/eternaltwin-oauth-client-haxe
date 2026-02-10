@@ -1,0 +1,36 @@
+haxelib.json
+  609617b7c670a90d 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.1",
+  "base_commit_sha": "3b467839d15e27151a025348450cd1c82139c277",
+  "prompts": {
+    "609617b7c670a90d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3b728ba0cffe9dQ3vtp2f1bedv",
+        "model": "github-copilot/claude-opus-4.6"
+      },
+      "human_author": "Charles-Meldhine Madi Mnemoi <icdk5b4zf@relay.firefox.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "c21d6959a0bc7135": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3b73151fcffeRxSUtFuseT28nZ",
+        "model": "github-copilot/claude-opus-4.6"
+      },
+      "human_author": "Charles-Meldhine Madi Mnemoi <icdk5b4zf@relay.firefox.com>",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
