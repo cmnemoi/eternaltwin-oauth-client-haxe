@@ -1,0 +1,23 @@
+release-please-config.json
+  5dc35ebf3dca47a5 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.1",
+  "base_commit_sha": "68836c735c3ea43bf322792badcfeb1f96a30349",
+  "prompts": {
+    "5dc35ebf3dca47a5": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_3b7870b12ffewD7IvV8dN8l68B",
+        "model": "opencode/kimi-k2.5-free"
+      },
+      "human_author": "Charles-Meldhine Madi Mnemoi <icdk5b4zf@relay.firefox.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
