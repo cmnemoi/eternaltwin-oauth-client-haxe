@@ -25,5 +25,13 @@ jobs:
       - name: Install dependencies
         run: haxelib install haxelib.json
       
-      - name: Run tests (${{ matrix.target }})
+      - name: Compile tests (${{ matrix.target }})
         run: haxe test-${{ matrix.target }}.hxml
+      
+      - name: Run tests (${{ matrix.target }})
+        run: |
+          if [ "${{ matrix.target }}" = "js" ]; then
+            node bin/tests.js
+          else
+            neko bin/tests.n
+          fi
