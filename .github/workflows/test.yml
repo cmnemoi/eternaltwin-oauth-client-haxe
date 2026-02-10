@@ -24,7 +24,9 @@ jobs:
           haxe-version: 4.3.7
       
       - name: Install dependencies
-        run: haxelib install haxelib.json
+        run: |
+          haxelib install haxelib.json
+          haxelib install utest
       
       - name: Compile tests (${{ matrix.target }})
         run: haxe test-${{ matrix.target }}.hxml
