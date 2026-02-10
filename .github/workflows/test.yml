@@ -31,7 +31,7 @@ jobs:
       
       - name: Run tests (${{ matrix.target }})
         run: |
-          if [ "${{ matrix.target }}" = "js" ]; then
+          if [ "${{ matrix.target }}" = "nodejs" ]; then
             node bin/tests.js
           else
             neko bin/tests.n
