@@ -2,5 +2,7 @@
 -cp tests
 -lib utest
 -lib tink_core
--js bin/tests.js
+-lib hxnodejs
+-D nodejs
+-js bin/tests-nodejs.js
 -main TestAll

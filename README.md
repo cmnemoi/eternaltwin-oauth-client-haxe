@@ -12,6 +12,14 @@ This library provides an OAuth 2.0 client implementation for the Eternaltwin pla
 haxelib install eternaltwin-oauth-client
 ```
 
+### Dependencies
+
+This library requires:
+- `tink_core` (for Future/Promise abstraction)
+- `hxnodejs` (for Node.js target support)
+
+These are automatically installed when you install the library via haxelib.
+
 ## Usage
 
 ### Basic Example
@@ -26,8 +34,8 @@ var config = new OauthClientConfig(
     "https://myapp.com/oauth/callback"
 ).withCredentials("my-client-id", "my-client-secret");
 
-// Create the client (use JsHttpClient for JavaScript, SysHttpClient for sys targets)
-var httpClient = new SysHttpClient();
+// Create the client (use NodeJsHttpClient for Node.js, SysHttpClient for sys targets)
+var httpClient = new NodeJsHttpClient();
 var oauthClient = new RfcOauthClient(config, httpClient);
 
 // Step 1: Build the authorization URI and redirect the user
@@ -70,8 +78,8 @@ Configuration class for OAuth endpoints and credentials:
 
 Interface for asynchronous HTTP requests (returns `Future<HttpResponse>`) with platform-specific implementations:
 
+- `NodeJsHttpClient` - For Node.js target — truly asynchronous via `haxe.http.HttpNodeJs` (uses Node.js native http module)
 - `SysHttpClient` - For sys targets (Neko, C++, Java, etc.) — blocking call wrapped in `Future.sync()`
-- `JsHttpClient` - For JavaScript targets — truly asynchronous via `FutureTrigger`
 - `FakeHttpClient` - For testing (available in tests)
 
 ### AccessToken

@@ -11,6 +11,7 @@
   "classPath": "src",
   "dependencies": {
     "utest": "1.13.2",
-    "tink_core": "2.1.1"
+    "tink_core": "2.1.1",
+    "hxnodejs": "12.2.0"
   }
 }
